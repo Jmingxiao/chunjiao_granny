@@ -115,18 +115,15 @@ public class UIManager : MonoBehaviour
     private void SetActivePanels(params GameObject[] activePanels)
     {
         // Deactivate all panels
-        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
-        if (gamePanel != null) gamePanel.SetActive(false);
-        if (pausePanel != null) pausePanel.SetActive(false);
-        if (gameOverPanel != null) gameOverPanel.SetActive(false);
-        if (foodPreparationPanel != null) foodPreparationPanel.SetActive(false);
+        mainMenuPanel?.SetActive(false);
+        gamePanel?.SetActive(false);
+        pausePanel?.SetActive(false);
+        gameOverPanel?.SetActive(false);
+        foodPreparationPanel?.SetActive(false);
         
         // Activate specified panels
         foreach (GameObject panel in activePanels)
-        {
-            if (panel != null)
-                panel.SetActive(true);
-        }
+            panel?.SetActive(true);
     }
     
     // Button click handlers

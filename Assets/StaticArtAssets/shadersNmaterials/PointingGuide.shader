@@ -2,7 +2,7 @@
 Shader "Unlit/PulseShader" {
     Properties {
         _Color ("Main Color", Color) = (1,1,1,1)
-        _Speed ("Pulse Speed", Range(1,5)) = 2
+        _Speed ("Pulse Speed", Range(0,3)) = 2
         _radius ("Radius", Range(0,1)) = 0.5
         _MainTex ("Texture", 2D) = "white" {}
     }
@@ -14,6 +14,8 @@ Shader "Unlit/PulseShader" {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+
+            #define PI 3.14159265359
             
             struct appdata {
                 float4 vertex : POSITION;
@@ -42,13 +44,13 @@ Shader "Unlit/PulseShader" {
             }
 
             fixed4 frag (v2f i) : SV_Target {
-                float d = sdCircle(i.uv*2 -1.0, _radius);
-                // 计算脉冲效果
-                float pulse = sin(_Time.y * _Speed) * 0.5 + 0.5;
+                float pulse = fmod(_Time.y*_Speed,1.0) * 0.5 + 0.1;
                 fixed4 col = _Color;
-                col.a *= pulse * 0.8; // 控制透明度变化幅度
-                float4 color = d>0.0 ? fixed4(0,0,0,0) : col;
-                color = lerp(color, fixed4(0.8,0.8,0.8,col.a), 1.0-smoothstep(0.0, 0.1, abs(d)));
+                float d = sdCircle(i.uv*2 -1.0, pulse);
+                pulse-=0.1;
+                col.a *= (1.0-pulse*1.6); // fade out the color
+                float4 color = 0.0;//d>0.0 ? fixed4(0,0,0,0) : col;
+                color = lerp(color, fixed4(0.9,0.9,0.9,col.a), 1.0-smoothstep(0.0, 0.1, abs(d)));
                 return color;
             }
             ENDCG

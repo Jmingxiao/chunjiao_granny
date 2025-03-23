@@ -33,8 +33,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Speed: 5
+    - _Speed: 0.8
     - _radius: 0.609
     m_Colors:
-    - _Color: {r: 0.7830188, g: 0.98535955, b: 1, a: 1}
+    - _Color: {r: 0.7830188, g: 0.9853595, b: 1, a: 0.26666668}
   m_BuildTextureStacks: []
