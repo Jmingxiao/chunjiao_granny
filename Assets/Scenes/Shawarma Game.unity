@@ -506,7 +506,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923456789}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 502ef293492fe47f8b36245fe400de5e, type: 3}
   m_Name: 
@@ -894,17 +894,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a6b2b304ca04a9280fbcc79708b5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hints:
-  - Speed up cooking by upgrading your equipment!
-  - Happy customers tip more when they don't wait long.
-  - Keep your stations clean for faster processing!
-  - Balancing orders is key to running an efficient restaurant.
-  - Premium ingredients cost more but increase customer satisfaction.
-  hintBubble: {fileID: 0}
-  hintText: {fileID: 0}
-  displayTime: 4
-  hintSound: {fileID: 0}
-  audioSource: {fileID: 4567891235}
 --- !u!82 &4567891235
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1153,51 +1142,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &7890123456
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7890123457}
-  - component: {fileID: 7890123458}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7890123457
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890123456}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7890123458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890123456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc834debaa1a843ca95f6be636dff525, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickHoldThreshold: 0.2
 --- !u!1 &8765432110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1363,4 +1307,3 @@ SceneRoots:
   - {fileID: 5432167891}
   - {fileID: 3456789014}
   - {fileID: 4567891231}
-  - {fileID: 7890123457}
