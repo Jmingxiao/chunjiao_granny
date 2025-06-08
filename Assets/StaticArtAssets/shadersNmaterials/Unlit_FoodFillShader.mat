@@ -24,7 +24,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2f12c9758dad4e34ea8bc886f1fdb0dd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap1:
@@ -50,7 +50,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaFalloff: 1.5
-    - _Blend: 0
+    - _Blend: 3
     - _Density: 11.3
     - _Layers: 3
     - _PatternScale: 0.5

@@ -8,7 +8,6 @@ Shader "Example/URPUnlitShaderTexture"
          _BaseMap("Base Map", 2D) = "white" {}
          _BaseMap1("Base Map", 2D) = "white" {}
          _BaseMap2("Base Map", 2D) = "white" {}
-         _BaseMap3("Base Map", 2D) = "white" {}
 
         _Blend("Blend", Range(0, 3)) = 0
     }
@@ -45,7 +44,6 @@ Shader "Example/URPUnlitShaderTexture"
             sampler2D _BaseMap;
             sampler2D _BaseMap1;
             sampler2D _BaseMap2;
-            sampler2D _BaseMap3;
 
             
             CBUFFER_START(UnityPerMaterial)
@@ -64,14 +62,14 @@ Shader "Example/URPUnlitShaderTexture"
             half4 frag(Varyings i) : SV_Target
             {
                 // The tex2d function samples the texture using the UV coordinates
-                half4 color = tex2D(_BaseMap1, i.uv);
-                half4 color1 = tex2D(_BaseMap2, i.uv);
-                half4 color2 = tex2D(_BaseMap3, i.uv);
+                half4 color = tex2D(_BaseMap, i.uv);
+                half4 color1 = tex2D(_BaseMap1, i.uv);
+                half4 color2 = tex2D(_BaseMap2, i.uv);
 
                 // The tex2d function samples the texture using the UV coordinates
                 half blend = (half)_Blend;
 
-                half4 col = step(blend,1.0)*color + step(0.9,blend)*step(blend,2.0)*color1 + step(1.9, blend)*color2;
+                half4 col = step(blend,0.9)*color + step(0.9,blend)*step(blend,1.8)*color1 + step(1.8, blend)*color2;
 
                 return col;
             }
