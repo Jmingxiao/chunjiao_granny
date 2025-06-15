@@ -31,15 +31,16 @@ public class FoodContainer : ClickableObject
     {
         ClickAnimation();
         ThrowFood("meat");
-        Debug.Log(gameObject.name + " clicked!");
     }
 
     private void ClickAnimation()
     {
         transform.DOKill(); // stop ongoing tweens on this transform
         transform.DOScale(clickScaleFactor, clickDuration)
-            .SetEase(Ease.OutQuad)
-            .SetLoops(2, LoopType.Yoyo);
+            .SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            transform.DOScale(1f, clickDuration).SetEase(Ease.OutQuad);
+        });
     }
    
     public void ThrowFood(string foodTag)
