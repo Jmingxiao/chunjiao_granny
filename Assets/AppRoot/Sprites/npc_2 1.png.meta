@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f6e4ee89e25a2634c9054e71402152a5
+guid: 787f1e744cf45d941a9a717a50d54d8c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: npc_6_0
+      name: npc_2 1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,14 +124,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9034daf01e20c04db2f9afd5e998347
-      internalID: -1374396499
+      spriteID: 2c92832d240cae043867be88918ecff0
+      internalID: 1357773158
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_1
+      name: npc_2 1_1
       rect:
         serializedVersion: 2
         x: 104
@@ -145,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2336c967dace03b4caa82d1808a91989
-      internalID: 10078699
+      spriteID: 07c1eb24b0a48e842a4c8ccdd7adcd57
+      internalID: -1644812732
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_2
+      name: npc_2 1_2
       rect:
         serializedVersion: 2
         x: 208
@@ -166,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0d506088cfd7b23468bd5c207ab122b9
-      internalID: -1682146795
+      spriteID: ea3079cd7dca5d343839a11e3f125fbb
+      internalID: 1531352645
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_3
+      name: npc_2 1_3
       rect:
         serializedVersion: 2
         x: 312
@@ -187,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01adc213334b6604ab67c65347792a68
-      internalID: -1772002707
+      spriteID: d994c8c1ee6f41c4eb9de6fd40f5faeb
+      internalID: -524000491
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_4
+      name: npc_2 1_4
       rect:
         serializedVersion: 2
         x: 416
@@ -208,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dfe77363387e3d34b8bd87b58b8517a3
-      internalID: 2108195325
+      spriteID: a3595a1990786a346ae023f655da5b37
+      internalID: 2021933072
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_5
+      name: npc_2 1_5
       rect:
         serializedVersion: 2
         x: 520
@@ -229,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84eb02543c140c7468a7468626889112
-      internalID: -1789914697
+      spriteID: df697e75a7c756c44a482e0fff83de5a
+      internalID: -1595865864
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_6
+      name: npc_2 1_6
       rect:
         serializedVersion: 2
         x: 624
@@ -250,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 84028949603ef674a941499e52e24821
-      internalID: 1283801337
+      spriteID: 3636045e16462ba438b72469c29533cb
+      internalID: 1042175461
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: npc_6_7
+      name: npc_2 1_7
       rect:
         serializedVersion: 2
         x: 728
@@ -271,8 +271,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a0996b021901e341a8e326e38c6d0dd
-      internalID: -558704172
+      spriteID: 0e8870728b229684587dce04c29c39af
+      internalID: 1011807477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: npc_2 1_8
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 0
+        width: 104
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 917ccdb2c79903c4ca921579ffd4317b
+      internalID: -1841042998
       vertices: []
       indices: 
       edges: []
@@ -288,14 +309,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      npc_6_0: -1374396499
-      npc_6_1: 10078699
-      npc_6_2: -1682146795
-      npc_6_3: -1772002707
-      npc_6_4: 2108195325
-      npc_6_5: -1789914697
-      npc_6_6: 1283801337
-      npc_6_7: -558704172
+      npc_2 1_0: 1357773158
+      npc_2 1_1: -1644812732
+      npc_2 1_2: 1531352645
+      npc_2 1_3: -524000491
+      npc_2 1_4: 2021933072
+      npc_2 1_5: -1595865864
+      npc_2 1_6: 1042175461
+      npc_2 1_7: 1011807477
+      npc_2 1_8: -1841042998
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
