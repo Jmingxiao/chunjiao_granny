@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     
     // Scene names
     public string mainMenuSceneName = "MainMenu";
-    public string gameSceneName = "Shawarma Game";
+    public string gameSceneName = "GamePlay";
 
     private void Awake()
     {
@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            ///DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     {
         SetDefaultValues();
         
+        
         // Check current scene
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == mainMenuSceneName)
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         }
         else if (currentScene.name == gameSceneName)
         {
+            
             CurrentState = GameState.Playing;
         }
     }
@@ -56,13 +58,14 @@ public class GameManager : MonoBehaviour
         CustomersSatisfied = 0;
         CurrentDay = 1;
         CurrentState = GameState.MainMenu;
+        Time.timeScale = 1;
     }
 
     public void StartGame()
     {
         CurrentState = GameState.Playing;
         Debug.Log("Game started!");
-        
+        Time.timeScale = 1;    
         // Load game scene
         SceneManager.LoadScene(gameSceneName);
     }

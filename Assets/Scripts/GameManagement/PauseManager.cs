@@ -15,18 +15,28 @@ public class PauseManager : MonoBehaviour
     {
         gamemanager.PauseGame();
         pauseCanvas.gameObject.SetActive(true);
+        pauseButton.gameObject.SetActive(false);
+       /// StartCoroutine(ShowWithDelay(pauseButton, 1f));
     }
 
     public void ResumeGame()
     {
         gamemanager.PauseGame();
         pauseCanvas.gameObject.SetActive(false);
+        pauseButton.gameObject.SetActive(true);
     }
     private void Start()
     {
+        gamemanager = GameManager.Instance;
+        
         pauseCanvas.gameObject.SetActive(false);
         pauseButton.onClick.AddListener(PauseGame);
         resumeButton.onClick.AddListener(ResumeGame);
     }
-  
+    IEnumerator ShowWithDelay(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        obj.SetActive(true);
+    }
+    
 }
