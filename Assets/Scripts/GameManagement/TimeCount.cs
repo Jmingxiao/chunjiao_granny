@@ -12,18 +12,17 @@ public class TimeCount : MonoBehaviour
 
     float timeCount = 0;
     // Start is called before the first frame update
-    bool stop = true;
+    bool stop = false;
     
     [SerializeField] float timeStop = 0;
     
     
-    void FixedUpdate()
+    void Update()  // 改为 Update
     {
-        //if (stop) return;
-        if (stop)
+        if (!stop)
         {
-            timeCount += Time.fixedDeltaTime;
-            timeText.text = System.TimeSpan.FromSeconds(value: timeCount).ToString( @"mm\:ss\:ff");
+            timeCount += Time.deltaTime;  // 使用 deltaTime
+            timeText.text = System.TimeSpan.FromSeconds(timeCount).ToString(@"mm\:ss\:ff");
             if (timeCount >= timeStop)
             {
                 LevelClear();
@@ -38,13 +37,18 @@ public class TimeCount : MonoBehaviour
     void LevelClear()
     {
         timeCount = 0;
-        stop = false;
+        stop = true;
        
     }
 
     void LevelStart()
     {
         stop = false;
+    }
+
+    public void LevelStop()
+    {
+        stop = true;
     }
 
 
