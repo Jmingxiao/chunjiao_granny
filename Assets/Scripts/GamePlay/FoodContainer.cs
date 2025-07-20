@@ -30,7 +30,7 @@ public class FoodContainer : ClickableObject
     protected override void OnClick()
     {
         ClickAnimation();
-        ThrowFood("meat");
+        ThrowFood("chili");
     }
 
     private void ClickAnimation()
