@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Cutboard : MonoBehaviour
 {
-   [Header("切菜板设置")]
+  [Header("切菜板设置")]
     [SerializeField] private Transform ingredientSlot;
     [SerializeField] private float cuttingTime = 3f; // 固定的切菜时间
     
     [Header("状态")]
     [SerializeField] private bool isOccupied = false;
     [SerializeField] private bool isCutting = false;
+    public Slider cuttingProgressSlider;
     
     private GameObject currentIngredient;
     private Ingredient currentIngredientComponent;
@@ -22,6 +25,30 @@ public class Cutboard : MonoBehaviour
         if (ingredientSlot == null)
         {
             ingredientSlot = transform;
+        }
+    }
+    
+    /// <summary>
+    /// 检测进入触发区域的物体
+    /// </summary>
+    void OnTriggerEnter(Collider other)
+    {
+        // 自动尝试放置进入触发区域的食材
+        if (!isOccupied && other.CompareTag("Ingredient"))
+        {
+            PlaceIngredient(other.gameObject);
+        }
+    }
+    
+    /// <summary>
+    /// 也可以用碰撞检测
+    /// </summary>
+    void OnCollisionEnter(Collision collision)
+    {
+        // 当物体碰到切菜板时自动尝试放置
+        if (!isOccupied && collision.gameObject.GetComponent<Ingredient>() != null)
+        {
+            PlaceIngredient(collision.gameObject);
         }
     }
     
@@ -60,6 +87,10 @@ public class Cutboard : MonoBehaviour
         ingredient.transform.parent = ingredientSlot;
         
         Debug.Log($"食材 {currentIngredientComponent.Data.ingredientName} 已放置在切菜板上");
+        
+        // 自动开始切菜
+        StartCutting();
+        
         return true;
     }
     
@@ -97,6 +128,7 @@ public class Cutboard : MonoBehaviour
         {
             cuttingProgress += Time.deltaTime;
             float progress = cuttingProgress / cuttingTime;
+            cuttingProgressSlider.value = progress;
             
             // 可以在这里触发进度更新事件
             // Debug.Log($"切菜进度: {progress * 100:F1}%");

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2cbc8b69096ef44ba37abaaa4c4bf3, type: 3}
+  m_Name: Pepper
+  m_EditorClassIdentifier: 
+  ingredientName: Chill
+  icon: {fileID: 21300000, guid: b2f884b66126e41cd8f3dfa7010d24f1, type: 3}
+  rawPrefab: {fileID: 8871856537140524941, guid: 1f5b6f5b9d532864d88a8290119fd0da, type: 3}
+  processedPrefab: {fileID: 2969587062445479921, guid: 6b8e453b212bdbc408794d3366bf9e36, type: 3}
