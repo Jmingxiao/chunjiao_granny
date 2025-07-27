@@ -3,19 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using DG.Tweening;
+
+[System.Serializable]
+public class IngredientEvent : UnityEvent<IngredientData> { }
+
+[System.Serializable]
+public class CutIngredientEvent : UnityEvent<GameObject> { }
 
 public class Cutboard : MonoBehaviour
 {
-  [Header("切菜板设置")]
+   [Header("切菜板设置")]
     [SerializeField] private Transform ingredientSlot;
-    [SerializeField] private float cuttingTime = 3f; // 固定的切菜时间
+    [SerializeField] private float cuttingTime = 3f;
+    [SerializeField] private bool autoCutting = true;
+    
+    [Header("事件")]
+    public IngredientEvent OnCuttingCompleted; // 切割完成时触发
+    public CutIngredientEvent OnCutIngredientReady; // 切好的食材准备好时触发
+
+    [Header("UI组件")]
+    public Slider cuttingProgressSlider;
     
     [Header("状态")]
     [SerializeField] private bool isOccupied = false;
     [SerializeField] private bool isCutting = false;
-    public Slider cuttingProgressSlider;
     
     private GameObject currentIngredient;
+    private GameObject currentCutIngredient; // 当前切好的食材
     private Ingredient currentIngredientComponent;
     private float cuttingProgress = 0f;
     private Coroutine cuttingCoroutine;
@@ -26,35 +42,19 @@ public class Cutboard : MonoBehaviour
         {
             ingredientSlot = transform;
         }
-    }
-    
-    /// <summary>
-    /// 检测进入触发区域的物体
-    /// </summary>
-    void OnTriggerEnter(Collider other)
-    {
-        // 自动尝试放置进入触发区域的食材
-        if (!isOccupied && other.CompareTag("Ingredient"))
+        if (cuttingProgressSlider != null)
         {
-            PlaceIngredient(other.gameObject);
+            cuttingProgressSlider.value = 0;
+            cuttingProgressSlider.gameObject.SetActive(false);
         }
+        
+        // 初始化事件
+        if (OnCuttingCompleted == null)
+            OnCuttingCompleted = new IngredientEvent();
+        if (OnCutIngredientReady == null)
+            OnCutIngredientReady = new CutIngredientEvent();
     }
     
-    /// <summary>
-    /// 也可以用碰撞检测
-    /// </summary>
-    void OnCollisionEnter(Collision collision)
-    {
-        // 当物体碰到切菜板时自动尝试放置
-        if (!isOccupied && collision.gameObject.GetComponent<Ingredient>() != null)
-        {
-            PlaceIngredient(collision.gameObject);
-        }
-    }
-    
-    /// <summary>
-    /// 放置食材到切菜板上
-    /// </summary>
     public bool PlaceIngredient(GameObject ingredient)
     {
         if (isOccupied)
@@ -63,7 +63,6 @@ public class Cutboard : MonoBehaviour
             return false;
         }
         
-        // 检查是否有Ingredient组件
         currentIngredientComponent = ingredient.GetComponent<Ingredient>();
         if (currentIngredientComponent == null)
         {
@@ -71,7 +70,6 @@ public class Cutboard : MonoBehaviour
             return false;
         }
         
-        // 检查是否有加工后的预制体
         if (currentIngredientComponent.Data == null || 
             currentIngredientComponent.Data.processedPrefab == null)
         {
@@ -82,21 +80,19 @@ public class Cutboard : MonoBehaviour
         currentIngredient = ingredient;
         isOccupied = true;
         
-        // 将食材移动到切菜板位置
         ingredient.transform.position = ingredientSlot.position;
         ingredient.transform.parent = ingredientSlot;
         
         Debug.Log($"食材 {currentIngredientComponent.Data.ingredientName} 已放置在切菜板上");
         
-        // 自动开始切菜
-        StartCutting();
+        if (autoCutting)
+        {
+            StartCutting();
+        }
         
         return true;
     }
     
-    /// <summary>
-    /// 开始切菜
-    /// </summary>
     public void StartCutting()
     {
         if (!isOccupied || currentIngredient == null)
@@ -104,7 +100,11 @@ public class Cutboard : MonoBehaviour
             Debug.Log("没有食材可以切！");
             return;
         }
-        
+        if (cuttingProgressSlider != null)
+        {
+            cuttingProgressSlider.gameObject.SetActive(true);
+            cuttingProgressSlider.value = 0;
+        }
         if (isCutting)
         {
             Debug.Log("正在切菜中...");
@@ -116,9 +116,6 @@ public class Cutboard : MonoBehaviour
         cuttingCoroutine = StartCoroutine(CuttingProcess());
     }
     
-    /// <summary>
-    /// 切菜过程协程
-    /// </summary>
     private IEnumerator CuttingProcess()
     {
         string ingredientName = currentIngredientComponent.Data.ingredientName;
@@ -128,21 +125,17 @@ public class Cutboard : MonoBehaviour
         {
             cuttingProgress += Time.deltaTime;
             float progress = cuttingProgress / cuttingTime;
-            cuttingProgressSlider.value = progress;
-            
-            // 可以在这里触发进度更新事件
-            // Debug.Log($"切菜进度: {progress * 100:F1}%");
-            
+            if (cuttingProgressSlider != null)
+            {
+                cuttingProgressSlider.value = progress;
+            }   
             yield return null;
         }
         
-        // 切菜完成
+        
         CompleteCutting();
     }
     
-    /// <summary>
-    /// 完成切菜
-    /// </summary>
     private void CompleteCutting()
     {
         IngredientData ingredientData = currentIngredientComponent.Data;
@@ -152,14 +145,21 @@ public class Cutboard : MonoBehaviour
         Destroy(currentIngredient);
         
         // 生成切好的食材
-        GameObject cutIngredient = Instantiate(
+        currentCutIngredient = Instantiate(
             ingredientData.processedPrefab, 
             ingredientSlot.position, 
             Quaternion.identity
         );
+        if (cuttingProgressSlider != null)
+        {
+            cuttingProgressSlider.value = 0;
+            cuttingProgressSlider.gameObject.SetActive(false);
+        }
+        // 设置为切菜板的子物体
+        currentCutIngredient.transform.parent = ingredientSlot;
         
         // 如果切好的食材也需要Ingredient组件，设置数据
-        Ingredient cutIngredientComponent = cutIngredient.GetComponent<Ingredient>();
+        Ingredient cutIngredientComponent = currentCutIngredient.GetComponent<Ingredient>();
         if (cutIngredientComponent != null)
         {
             cutIngredientComponent.SetIngredientData(ingredientData);
@@ -167,42 +167,14 @@ public class Cutboard : MonoBehaviour
         
         Debug.Log($"生成了切好的 {ingredientData.ingredientName}");
         
-        // 重置状态
-        ResetCutBoard();
-    }
-    
-    /// <summary>
-    /// 移除食材（不切菜，直接拿走）
-    /// </summary>
-    public GameObject RemoveIngredient()
-    {
-        if (!isOccupied || currentIngredient == null)
-        {
-            return null;
-        }
+        // 触发事件
+        OnCuttingCompleted?.Invoke(ingredientData);
+        OnCutIngredientReady?.Invoke(currentCutIngredient);
         
-        if (isCutting)
-        {
-            StopCutting();
-        }
-        
-        GameObject ingredient = currentIngredient;
-        ingredient.transform.parent = null;
-        
-        ResetCutBoard();
-        return ingredient;
-    }
-    
-    /// <summary>
-    /// 重置切菜板状态
-    /// </summary>
-    private void ResetCutBoard()
-    {
-        isOccupied = false;
+        // 重置切菜状态（但保持占用，等待食材被取走）
         isCutting = false;
-        currentIngredient = null;
-        currentIngredientComponent = null;
         cuttingProgress = 0f;
+        currentIngredient = null;
         
         if (cuttingCoroutine != null)
         {
@@ -212,36 +184,91 @@ public class Cutboard : MonoBehaviour
     }
     
     /// <summary>
-    /// 停止切菜
+    /// 移除切好的食材（由锅具调用）
     /// </summary>
+    public GameObject RemoveCutIngredient()
+    {
+        if (currentCutIngredient == null)
+        {
+            return null;
+        }
+        
+        GameObject ingredient = currentCutIngredient;
+        ingredient.transform.parent = null;
+        
+        currentCutIngredient = null;
+        ResetCutBoard();
+        
+        return ingredient;
+    }
+    
+    /// <summary>
+    /// 获取当前切好的食材数据
+    /// </summary>
+    public IngredientData GetCutIngredientData()
+    {
+        if (currentCutIngredient != null)
+        {
+            Ingredient comp = currentCutIngredient.GetComponent<Ingredient>();
+            return comp?.Data;
+        }
+        return null;
+    }
+    
+    /// <summary>
+    /// 检查是否有切好的食材
+    /// </summary>
+    public bool HasCutIngredient()
+    {
+        return currentCutIngredient != null;
+    }
+    
+    private void ResetCutBoard()
+    {
+        isOccupied = false;
+        isCutting = false;
+        currentIngredient = null;
+        currentIngredientComponent = null;
+        currentCutIngredient = null;
+        cuttingProgress = 0f;
+        
+        if (cuttingCoroutine != null)
+        {
+            StopCoroutine(cuttingCoroutine);
+            cuttingCoroutine = null;
+        }
+        if (cuttingProgressSlider != null)
+        {
+            cuttingProgressSlider.value = 0;
+            cuttingProgressSlider.gameObject.SetActive(false);
+        }
+    }
+    
     public void StopCutting()
     {
         if (cuttingCoroutine != null)
         {
             StopCoroutine(cuttingCoroutine);
         }
+        if (cuttingProgressSlider != null)
+        {
+            cuttingProgressSlider.gameObject.SetActive(false);
+        }
         
         Debug.Log("切菜已停止");
         isCutting = false;
     }
     
-    /// <summary>
-    /// 获取切菜进度（0-1）
-    /// </summary>
     public float GetCuttingProgress()
     {
         return cuttingTime > 0 ? cuttingProgress / cuttingTime : 0f;
     }
     
-    /// <summary>
-    /// 获取当前食材数据
-    /// </summary>
     public IngredientData GetCurrentIngredientData()
     {
         return currentIngredientComponent?.Data;
     }
     
-    // 公共属性
     public bool IsAvailable() => !isOccupied;
     public bool IsCutting() => isCutting;
     public bool HasIngredient() => isOccupied && currentIngredient != null;
