@@ -359,6 +359,41 @@ MonoBehaviour:
   cutboard: {fileID: 0}
   potType: 1
   ingredientsInPot: []
+  ingredientObjects: []
+  availableRecipes:
+  - recipeName: 
+    description: 
+    basePrice: 0
+    preparationTime: 0
+    icon: {fileID: 0}
+    requiredIngredients:
+    - itemName: 
+      type: 0
+      quality: 0
+      preparationTime: 0
+      icon: {fileID: 0}
+      costToBuy: 0
+      baseSellPrice: 0
+      requiresCooking: 0
+      cookingTime: 0
+      isCooked: 0
+      foodColor: {r: 0, g: 0, b: 0, a: 0}
+      foodScale: {x: 0, y: 0, z: 0}
+    difficulty: 0
+    popularity: 0
+  autoStartCooking: 1
+  showMatchDetails: 1
+  dishPrefabs: []
+  isCooking: 0
+  currentRecipe:
+    recipeName: 
+    description: 
+    basePrice: 0
+    preparationTime: 0
+    icon: {fileID: 0}
+    requiredIngredients: []
+    difficulty: 0
+    popularity: 0
 --- !u!212 &174352974
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1883,7 +1918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74899bfce089ece4cab52d8d166f1be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodTag: Chill
+  foodTag: Cabbage
   targetCutBoard: {fileID: 1229836789}
   cutBoardTag: CutBoard
   throwDuration: 0.5
@@ -2142,6 +2177,10 @@ MonoBehaviour:
     prefab: {fileID: 8871856537140524941, guid: 1f5b6f5b9d532864d88a8290119fd0da, type: 3}
     size: 50
     expandable: 1
+  - tag: Cabbage
+    prefab: {fileID: 7818136354151507202, guid: 0921877104bfe034a881961c7bbc4211, type: 3}
+    size: 50
+    expandable: 1
 --- !u!1 &1465123432
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,6 +2214,21 @@ MonoBehaviour:
   cutboard: {fileID: 0}
   potType: 0
   ingredientsInPot: []
+  ingredientObjects: []
+  availableRecipes: []
+  autoStartCooking: 1
+  showMatchDetails: 1
+  dishPrefabs: []
+  isCooking: 0
+  currentRecipe:
+    recipeName: 
+    description: 
+    basePrice: 0
+    preparationTime: 0
+    icon: {fileID: 0}
+    requiredIngredients: []
+    difficulty: 0
+    popularity: 0
 --- !u!212 &1465123434
 SpriteRenderer:
   m_ObjectHideFlags: 0
