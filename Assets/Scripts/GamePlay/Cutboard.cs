@@ -12,7 +12,7 @@ public class IngredientEvent : UnityEvent<IngredientData> { }
 [System.Serializable]
 public class CutIngredientEvent : UnityEvent<GameObject> { }
 
-public class Cutboard : MonoBehaviour
+public class Cutboard : MonoBehaviour,IPointerClickHandler
 {
    [Header("切菜板设置")]
     [SerializeField] private Transform ingredientSlot;
@@ -22,6 +22,11 @@ public class Cutboard : MonoBehaviour
     [Header("事件")]
     public IngredientEvent OnCuttingCompleted; // 切割完成时触发
     public CutIngredientEvent OnCutIngredientReady; // 切好的食材准备好时触发
+
+    [Header("弹出设置")]
+    [SerializeField] private float ejectForce = 10f; // 弹出力度
+    [SerializeField] private float ejectDuration = 1f; // 弹出动画时长
+    [SerializeField] private AnimationCurve ejectCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     [Header("UI组件")]
     public Slider cuttingProgressSlider;
@@ -136,6 +141,9 @@ public class Cutboard : MonoBehaviour
         CompleteCutting();
     }
     
+    /// <summary>
+    /// 完成切割
+    /// </summary>
     private void CompleteCutting()
     {
         IngredientData ingredientData = currentIngredientComponent.Data;
@@ -267,6 +275,180 @@ public class Cutboard : MonoBehaviour
     public IngredientData GetCurrentIngredientData()
     {
         return currentIngredientComponent?.Data;
+    }
+    /// <summary>
+    /// 处理点击事件
+    /// </summary>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        EjectIngredient();
+    }
+    
+    /// <summary>
+    /// 弹出当前食材
+    /// </summary>
+    public void EjectIngredient()
+    {
+        GameObject ingredientToEject = null;
+        
+        // 确定要弹出的食材
+        if (currentCutIngredient != null)
+        {
+            // 优先弹出切好的食材
+            ingredientToEject = currentCutIngredient;
+            currentCutIngredient = null;
+            Debug.Log("弹出切好的食材");
+        }
+        else if (currentIngredient != null)
+        {
+            // 弹出正在切或未切的食材
+            ingredientToEject = currentIngredient;
+            currentIngredient = null;
+            
+            // 如果正在切，停止切菜
+            if (isCutting)
+            {
+                StopCutting();
+                Debug.Log("停止切菜并弹出食材");
+            }
+            else
+            {
+                Debug.Log("弹出未切的食材");
+            }
+        }
+        
+        // 执行弹出
+        if (ingredientToEject != null)
+        {
+            StartCoroutine(EjectAnimation(ingredientToEject));
+            
+            // 重置切菜板状态
+            ResetCutBoard();
+        }
+        else
+        {
+            Debug.Log("切菜板上没有食材");
+        }
+    }
+     // 添加按键支持（可选）
+    void Update()
+    {
+        // 按E键也可以弹出食材
+        if (Input.GetKeyDown(KeyCode.E) && (currentIngredient != null || currentCutIngredient != null))
+        {
+            EjectIngredient();
+        }
+    }
+    /// <summary>
+    /// 弹出动画
+    /// </summary>
+    private IEnumerator EjectAnimation(GameObject ingredient)
+    {
+        // 解除父子关系
+        ingredient.transform.parent = null;
+        
+        // 计算弹出方向（向上并偏向一侧）
+        Vector3 startPos = ingredient.transform.position;
+        Vector3 ejectDirection = new Vector3(
+            Random.Range(-1f, 1f), // 随机左右
+            2f,                     // 向上
+            Random.Range(-0.5f, 0.5f) // 轻微前后
+        ).normalized;
+        
+        Vector3 targetPos = startPos + ejectDirection * ejectForce;
+        
+        // 添加旋转
+        Vector3 randomRotation = new Vector3(
+            Random.Range(-360f, 360f),
+            Random.Range(-360f, 360f),
+            Random.Range(-360f, 360f)
+        );
+        
+        float elapsed = 0f;
+        
+        // 如果有刚体，暂时禁用
+        Rigidbody rb = ingredient.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
+        
+        // 弹出动画
+        while (elapsed < ejectDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / ejectDuration;
+            float curveValue = ejectCurve.Evaluate(t);
+            
+            // 位置插值
+            Vector3 currentPos = Vector3.Lerp(startPos, targetPos, curveValue);
+            
+            // 添加抛物线效果
+            float height = Mathf.Sin(t * Mathf.PI) * 2f;
+            currentPos.y += height;
+            
+            ingredient.transform.position = currentPos;
+            
+            // 旋转
+            ingredient.transform.rotation = Quaternion.Euler(randomRotation * t);
+            
+            yield return null;
+        }
+        
+        // 销毁食材
+        Destroy(ingredient);
+        Debug.Log("食材已弹出并销毁");
+    }
+    
+    /// <summary>
+    /// 替代的弹出方案（使用DOTween）
+    /// </summary>
+    private void EjectWithDOTween(GameObject ingredient)
+    {
+        // 解除父子关系
+        ingredient.transform.parent = null;
+        
+        // 随机方向
+        Vector3 randomDirection = new Vector3(
+            Random.Range(-3f, 3f),
+            Random.Range(5f, 8f),
+            Random.Range(-2f, 2f)
+        );
+        
+        // 创建动画序列
+        Sequence ejectSequence = DOTween.Sequence();
+        
+        // 弹出移动
+        ejectSequence.Append(
+            ingredient.transform.DOMove(
+                ingredient.transform.position + randomDirection, 
+                ejectDuration
+            ).SetEase(Ease.OutQuad)
+        );
+        
+        // 旋转
+        ejectSequence.Join(
+            ingredient.transform.DORotate(
+                new Vector3(
+                    Random.Range(-720f, 720f),
+                    Random.Range(-720f, 720f),
+                    Random.Range(-720f, 720f)
+                ), 
+                ejectDuration, 
+                RotateMode.FastBeyond360
+            )
+        );
+        
+        // 缩小消失
+        ejectSequence.Join(
+            ingredient.transform.DOScale(0f, ejectDuration).SetEase(Ease.InBack)
+        );
+        
+        // 完成后销毁
+        ejectSequence.OnComplete(() => {
+            Destroy(ingredient);
+            Debug.Log("食材已弹出并销毁");
+        });
     }
     
     public bool IsAvailable() => !isOccupied;

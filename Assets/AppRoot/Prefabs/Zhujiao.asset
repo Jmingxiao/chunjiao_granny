@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d2cbc8b69096ef44ba37abaaa4c4bf3, type: 3}
-  m_Name: Pork
+  m_Name: Zhujiao
   m_EditorClassIdentifier: 
-  ingredientName: Pork
-  icon: {fileID: 21300000, guid: 18147cefab6709e41aa2df1b3bebd4c3, type: 3}
+  ingredientName: Zhujiao
+  icon: {fileID: 21300000, guid: bc410daa37074e548af0882b2451d56e, type: 3}
   rawPrefab: {fileID: 0}
-  processedPrefab: {fileID: 7267955948366160015, guid: 25779c9cf1054e74e9d4a6bab900c84e, type: 3}
-  potType: 0
+  processedPrefab: {fileID: 5077198149214407757, guid: bda578c96970f3c44834a30718776310, type: 3}
+  potType: 1

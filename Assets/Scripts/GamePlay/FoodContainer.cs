@@ -4,7 +4,7 @@ using System.Collections;
 
 public class FoodContainer : ClickableObject
 {
-   private SpriteRenderer meshRenderer;
+    private SpriteRenderer meshRenderer;
     Material material;
     
     [Header("Food Container Settings")]
@@ -156,29 +156,21 @@ public class FoodContainer : ClickableObject
     
     private IEnumerator ThrowToPotCoroutine()
     {
-        // 对于直接使用的食材，使用processedPrefab
-        GameObject foodPiece = Instantiate(ingredientData.processedPrefab);
-        
-        // 添加Ingredient组件
-        Ingredient ingredient = foodPiece.GetComponent<Ingredient>();
-        if (ingredient == null)
-        {
-            ingredient = foodPiece.AddComponent<Ingredient>();
-        }
-        ingredient.SetIngredientData(ingredientData);
+        // 创建一个临时的视觉对象用于飞行动画
+        GameObject visualObj = Instantiate(ingredientData.processedPrefab);
         
         // 设置起始位置
-        foodPiece.transform.position = transform.position;
+        visualObj.transform.position = transform.position;
         Vector3 targetPos = targetPot.transform.position + Vector3.up * 1f;
         
         // 飞行动画
-        yield return StartCoroutine(FlyToTarget(foodPiece, targetPos));
+        yield return StartCoroutine(FlyToTarget(visualObj, targetPos));
         
-        // 直接添加到锅
-        targetPot.TryAddDirectIngredient(ingredientData);
+        // 销毁视觉对象
+        Destroy(visualObj);
         
-        // 销毁临时对象（因为TryAddDirectIngredient会创建新的）
-        Destroy(foodPiece);
+        // 让Pot自己创建和管理食材
+        targetPot.AddDirectIngredient(ingredientData);
     }
     
     /// <summary>

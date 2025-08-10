@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Pot : MonoBehaviour
 {
@@ -14,23 +16,18 @@ public class Pot : MonoBehaviour
     [SerializeField] private List<GameObject> ingredientObjects = new List<GameObject>();
     
     [Header("菜谱系统")]
-    [SerializeField] private List<Recipe> availableRecipes;
+    [SerializeField] private RecipeDatabase recipeDatabase; // 使用RecipeDatabase
     [SerializeField] private bool autoStartCooking = true;
-    [SerializeField] private bool showMatchDetails = true; // 显示匹配详情
     
-    [Header("菜品预制体")]
-    [SerializeField] private List<DishPrefabMapping> dishPrefabs = new List<DishPrefabMapping>();
-    
-    [System.Serializable]
-    public class DishPrefabMapping
-    {
-        public string recipeName;
-        public GameObject dishPrefab;
-    }
+    [Header("UI组件")]
+    public Slider cookingProgressSlider;
     
     [Header("烹饪状态")]
-    [SerializeField] public bool isCooking = false;
-    [SerializeField] private Recipe currentRecipe = null;
+    [SerializeField] private bool isCooking = false;
+    [SerializeField] private float cookingTime = 10f;
+    private Recipe currentRecipe = null;
+    private List<Recipe> cachedRecipes; // 缓存转换后的Recipe对象
+    private float cookingProgress = 0f;
     private Coroutine cookingCoroutine;
     
     private void Start()
@@ -39,11 +36,21 @@ public class Pot : MonoBehaviour
         {
             cutboard = FindObjectOfType<Cutboard>();
         }
-        
-        // 如果没有手动设置菜谱，获取通用菜谱
-        if (availableRecipes == null || availableRecipes.Count == 0)
+        if (cookingProgressSlider != null)
         {
-            availableRecipes = Recipe.GetCommonRecipes();
+            cookingProgressSlider.value = 0;
+            cookingProgressSlider.gameObject.SetActive(false);
+        }
+        
+        // 从RecipeDatabase获取菜谱
+        if (recipeDatabase != null)
+        {
+            cachedRecipes = recipeDatabase.GetAllRecipes();
+        }
+        else
+        {
+            cachedRecipes = new List<Recipe>();
+            Debug.LogWarning("没有设置RecipeDatabase");
         }
         
         if (cutboard != null)
@@ -68,130 +75,133 @@ public class Pot : MonoBehaviour
             
             if (cutIngredient != null)
             {
-                // 将食材移到锅中
                 cutIngredient.transform.position = transform.position + Vector3.up * (ingredientsInPot.Count * 0.2f);
                 cutIngredient.transform.parent = transform;
                 
-                // 存储食材
                 ingredientsInPot.Add(ingredientData);
                 ingredientObjects.Add(cutIngredient);
                 
                 Debug.Log($"添加食材: {ingredientData.ingredientName} (总计: {ingredientsInPot.Count})");
                 
-                // 检查可制作的菜品
                 CheckRecipes();
-            }
-        }
-    }
-
-    /// <summary>
-    /// 检查可制作的菜品
-    /// </summary>
-    private void CheckRecipes()
-    {
-        if (isCooking) return;
-        
-        // 按人气度排序
-        availableRecipes.Sort((a, b) => b.popularity.CompareTo(a.popularity));
-        
-        foreach (var recipe in availableRecipes)
-        {
-            if (FlexibleRecipeMatcher.CanMakeRecipe(recipe, ingredientsInPot))
-            {
-                Debug.Log($"<color=green>可以制作: {recipe.recipeName}</color>");
-                
-                if (showMatchDetails)
-                {
-                    Debug.Log(FlexibleRecipeMatcher.GetMatchingDetails(recipe, ingredientsInPot));
-                }
-                
-                if (autoStartCooking)
-                {
-                    StartCooking(recipe);
-                    break;
-                }
             }
         }
     }
     
     /// <summary>
-    /// 开始烹饪
+    /// 直接添加食材（用于酱料等）
     /// </summary>
-    /// <param name="recipe">菜谱</param>
-    public void StartCooking(Recipe recipe)
+    public bool AddDirectIngredient(IngredientData ingredientData)
+    {
+        if (isCooking)
+        {
+            Debug.Log("正在烹饪中，无法添加食材");
+            return false;
+        }
+        
+        if (!ingredientData.CanDirectlyToPot())
+        {
+            Debug.Log($"{ingredientData.ingredientName} 需要先在切菜板上处理");
+            return false;
+        }
+        
+        if (ingredientData.potType != potType)
+        {
+            Debug.Log($"{ingredientData.ingredientName} 不适合这个锅");
+            return false;
+        }
+        
+        GameObject ingredientObj = Instantiate(
+            ingredientData.processedPrefab,
+            transform.position + Vector3.up * (ingredientsInPot.Count * 0.2f),
+            Quaternion.identity
+        );
+        
+        Ingredient ingredient = ingredientObj.GetComponent<Ingredient>();
+        if (ingredient == null)
+        {
+            ingredient = ingredientObj.AddComponent<Ingredient>();
+        }
+        ingredient.SetIngredientData(ingredientData);
+        
+        ingredientObj.transform.parent = transform;
+        
+        ingredientsInPot.Add(ingredientData);
+        ingredientObjects.Add(ingredientObj);
+        
+        Debug.Log($"直接添加食材: {ingredientData.ingredientName} (总计: {ingredientsInPot.Count})");
+        
+        CheckRecipes();
+        
+        return true;
+    }
+    
+    private void CheckRecipes()
+    {
+        if (isCooking || cachedRecipes == null) return;
+        
+        // 遍历所有菜谱
+        foreach (var recipe in cachedRecipes)
+        {
+            // 使用简化的匹配器
+            if (FlexibleRecipeMatcher.CanMakeRecipe(recipe, ingredientsInPot))
+            {
+                Debug.Log($"<color=green>食材齐全，开始制作: {recipe.recipeName}</color>");
+                
+                if (autoStartCooking)
+                {
+                    StartCooking(recipe);
+                }
+                return;
+            }
+        }
+        
+        Debug.Log($"当前食材还不足以制作任何菜品");
+    }
+    
+    public void StartCooking(Recipe recipe = null)
     {
         if (isCooking || recipe == null) return;
+        if (cookingProgressSlider != null)
+        {
+            cookingProgressSlider.gameObject.SetActive(true);
+            cookingProgressSlider.value = 0;
+        }
         
         currentRecipe = recipe;
         isCooking = true;
-        
-        if (cookingCoroutine != null)
-        {
-            StopCoroutine(cookingCoroutine);
-        }
-        
+        cookingProgress = 0f;
         cookingCoroutine = StartCoroutine(CookingProcess());
     }
     
     private IEnumerator CookingProcess()
     {
-        float cookingTime = currentRecipe.CalculatePreparationTime();
-        Debug.Log($"开始烹饪 {currentRecipe.recipeName} ({cookingTime}秒)");
         
-        // 等待烹饪
-        yield return new WaitForSeconds(cookingTime);
-        
-        // 生成菜品
-        //Recipe的recipeName是菜谱的名称，dishPrefabs是菜谱的预制体
-        //GetDishPrefab(currentRecipe.recipeName)是获取菜谱的预制体
-        
-        GameObject dishPrefab = GetDishPrefab(currentRecipe.recipeName);
-        if (dishPrefab != null)
+        while (cookingProgress < cookingTime)
         {
-            GameObject dish = Instantiate(dishPrefab, 
-                transform.position + Vector3.up * 2f, 
-                Quaternion.identity);
-
-                
-            Debug.Log($"<color=yellow>{currentRecipe.recipeName} 完成！</color>");
-        }
-        else
-        {
-            Debug.LogWarning($"未找到 {currentRecipe.recipeName} 的预制体");
+            cookingProgress += Time.deltaTime;
+            float progress = cookingProgress / cookingTime;
+            if (cookingProgressSlider != null)
+            {
+                cookingProgressSlider.value = progress;
+            }   
+            yield return null;
         }
         
+        Debug.Log($"{currentRecipe.recipeName} 完成！");
+        Debug.Log($"售价: ${currentRecipe.CalculatePrice()}");
+        /// 生成成品
+        GameObject finishedProduct = Instantiate(
+            currentRecipe.dishPrefab,
+            transform.position + Vector3.up * (ingredientsInPot.Count * 0.2f),
+            Quaternion.identity
+        );
+        finishedProduct.transform.parent = transform;
+        CompleteCooking();        
+    }
+    public void CompleteCooking()
+    {
         // 清空锅中的食材
-        ClearPot();
-        
-        // 重置状态
-        isCooking = false;
-        currentRecipe = null;
-    }
-
-    public void TryAddDirectIngredient(IngredientData ingredientData)
-    {
-        if (ingredientData.CanDirectlyToPot())
-        {
-            ingredientsInPot.Add(ingredientData);
-        }
-    }
-
-
-    /// <summary>
-    /// 获取菜谱的预制体
-    /// </summary>
-    /// <param name="recipeName">菜谱的名称</param>
-    /// <returns>菜谱的预制体</returns>
-    private GameObject GetDishPrefab(string recipeName)
-    {
-        var mapping = dishPrefabs.Find(d => 
-            d.recipeName.ToLower() == recipeName.ToLower());
-        return mapping?.dishPrefab;
-    }
-    
-    
-    private void ClearPot()
-    {
         foreach (var obj in ingredientObjects)
         {
             if (obj != null)
@@ -200,26 +210,25 @@ public class Pot : MonoBehaviour
         
         ingredientsInPot.Clear();
         ingredientObjects.Clear();
+        
+        isCooking = false;
+        currentRecipe = null;
+        if (cookingProgressSlider != null)
+        {
+            cookingProgressSlider.value = 0;
+            cookingProgressSlider.gameObject.SetActive(false);
+        }
+
+        
     }
     
-    /// <summary>
-    /// 手动检查可制作的菜谱
-    /// </summary>
-    [ContextMenu("Check Available Recipes")]
-    public void DebugCheckRecipes()
-    {
-        Debug.Log("=== 可制作的菜谱 ===");
-        foreach (var recipe in availableRecipes)
-        {
-            if (FlexibleRecipeMatcher.CanMakeRecipe(recipe, ingredientsInPot))
-            {
-                Debug.Log($"✓ {recipe.recipeName}");
-                Debug.Log(FlexibleRecipeMatcher.GetMatchingDetails(recipe, ingredientsInPot));
-            }
-        }
-    }
     public bool IsCooking()
     {
         return isCooking;
+    }
+    
+    public bool CanAcceptIngredient()
+    {
+        return !isCooking && ingredientsInPot.Count < 10;
     }
 }
