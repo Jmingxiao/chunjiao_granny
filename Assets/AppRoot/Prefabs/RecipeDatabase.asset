@@ -21,7 +21,7 @@ MonoBehaviour:
   - recipeName: "\u7092\u8089"
     description: 
     basePrice: 0.59
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: ac185566ed8207547a86d8bcde8b74e7, type: 3}
     requiredIngredients:
     - {fileID: 11400000, guid: e380cbf58ed5892499bf8146c291a5c8, type: 2}
     - {fileID: 11400000, guid: b1d5f859278315e46bd95a95733756d8, type: 2}
@@ -30,7 +30,7 @@ MonoBehaviour:
     popularity: 0.184
   - recipeName: "\u8FA3\u6912\u7092\u8089"
     description: 
-    basePrice: 0.59
+    basePrice: 1.23
     icon: {fileID: 21300000, guid: b7c3ab4e1158d3342b40a38bb1ce2938, type: 3}
     requiredIngredients:
     - {fileID: 11400000, guid: 4532f7acd43c3f24cb6b67458fc729cf, type: 2}

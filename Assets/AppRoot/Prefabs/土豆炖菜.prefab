@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3654489150175837594}
   - component: {fileID: 6512992376915292851}
   - component: {fileID: -3644102635496311643}
+  - component: {fileID: -3776281568172475136}
+  - component: {fileID: -6133231787372188586}
   m_Layer: 6
   m_Name: "\u571F\u8C46\u7096\u83DC"
   m_TagString: Dish
@@ -158,3 +160,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-3776281568172475136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3753595163899292749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f9f8104dc8a2cc46a2114d0d15143c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 12.95
+--- !u!114 &-6133231787372188586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3753595163899292749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb6d7fef9ace65e49985fe67e8364f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dishName: Default Dish
