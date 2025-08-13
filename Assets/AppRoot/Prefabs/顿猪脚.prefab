@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9f8104dc8a2cc46a2114d0d15143c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12.64
+  moveSpeed: 30
 --- !u!114 &4549202497970788134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,3 +185,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6d7fef9ace65e49985fe67e8364f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dishName: Default Dish
