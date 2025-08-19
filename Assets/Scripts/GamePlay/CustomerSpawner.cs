@@ -35,6 +35,16 @@ public class CustomerSpawner : MonoBehaviour
     private List<CustomerNPC> activeCustomers = new List<CustomerNPC>();
     private Coroutine spawnCoroutine;
 
+    [Header("Queue Settings")]
+    [Tooltip("Reference to the QueueManager in the scene")]
+    [SerializeField] private QueueManager queueManager;
+
+    [Header("Recipe System")]
+    [Tooltip("Recipe Database - 拖拽RecipeDatabase资源到这里")]
+    [SerializeField] private RecipeDatabase recipeDatabase;
+
+    
+
     private void Start()
     {
         // Validate prefabs and menus
@@ -53,11 +63,54 @@ public class CustomerSpawner : MonoBehaviour
             Debug.LogError("No Customer Menus assigned in CustomerSpawner! Please create and assign some ScriptableObjects.", this);
             return;
         }
+         if (queueManager == null)
+        {
+            queueManager = FindObjectOfType<QueueManager>();
+            if (queueManager == null)
+            {
+                Debug.LogWarning("QueueManager not found in scene! Customers won't be able to queue properly.", this);
+            }
+        }
+        
+        if (SeatManager.Instance == null)
+        {
+            Debug.LogWarning("SeatManager not found in scene! Customers won't be able to find seats.", this);
+        }
+        if (recipeDatabase == null)
+        {
+            Debug.LogWarning("RecipeDatabase未在CustomerSpawner上设置。确保CustomerNPC预制体上已经设置了RecipeDatabase！", this);
+        }
+        
+        // 验证CustomerNPC预制体是否已经有RecipeDatabase
+        CustomerNPC prefabCustomer = customerNPCPrefab.GetComponent<CustomerNPC>();
+        if (prefabCustomer != null)
+        {
+            // 使用反射或SerializedObject检查是否设置了recipeDatabase
+            // 这里只是示例，实际使用时可能需要更复杂的检查
+            Debug.Log("请确保CustomerNPC预制体已经设置了RecipeDatabase");
+        }
+        
+   
 
         InitializeCustomerPool(maxCustomersOnScreen * 2); // Initialize pool with double the max customers
         spawnCoroutine = StartCoroutine(SpawnCustomersRoutine());
     }
-
+ 
+    /// <summary>
+    /// 获取队列起始位置
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetQueueStartPosition()
+    {
+        if (queueManager != null)
+            return queueManager.GetQueueStartPosition();
+        
+        // 如果没有QueueManager，返回一个默认位置
+        return transform.position + Vector3.right * 5f;
+    }
+    /// <summary>
+    /// 禁用时停止生成顾客
+    /// </summary>
     private void OnDisable()
     {
         // Stop the spawning coroutine when the spawner is disabled
@@ -67,10 +120,7 @@ public class CustomerSpawner : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Initializes the customer object pool.
-    /// </summary>
-    /// <param name="poolSize">The initial size of the pool.</param>
+     // 修改InitializeCustomerPool方法：
     private void InitializeCustomerPool(int poolSize)
     {
         for (int i = 0; i < poolSize; i++)
@@ -83,12 +133,19 @@ public class CustomerSpawner : MonoBehaviour
                 Destroy(obj);
                 continue;
             }
-            customer.Initialize(this, topicBubbleUIPrefab); // Pass reference to spawner and bubble prefab
-            obj.SetActive(false); // Deactivate immediately
+            
+            // 初始化customer，传递必要的引用
+            customer.Initialize(this, topicBubbleUIPrefab);
+            
+            // 如果RecipeDatabase在Spawner上设置了，可以在这里设置
+            // 但是更好的方法是直接在CustomerNPC预制体上设置
+            
+            obj.SetActive(false);
             customerPool.Add(customer);
         }
         Debug.Log($"Initialized customer pool with {poolSize} customers.");
     }
+
 
     /// <summary>
     /// Coroutine to continuously spawn customers.

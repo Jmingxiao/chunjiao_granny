@@ -185,4 +185,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6d7fef9ace65e49985fe67e8364f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dishName: Default Dish
+  dishName: "\u571F\u8C46\u7096\u83DC"
+  dishMenuData: {fileID: 11400000, guid: ca440d6ed3e4d2f4682590c5920fa4cf, type: 2}
+  associatedRecipe:
+    recipeName: "\u7092\u8089"
+    description: 
+    basePrice: 0
+    icon: {fileID: 0}
+    requiredIngredients: []
+    dishPrefab: {fileID: 0}
+    difficulty: 0
+    popularity: 0
+  completeness: 1
+  deliveryRange: 5
+  customerLayer:
+    serializedVersion: 2
+    m_Bits: 8

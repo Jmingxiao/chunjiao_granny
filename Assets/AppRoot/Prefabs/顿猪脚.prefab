@@ -185,4 +185,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6d7fef9ace65e49985fe67e8364f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dishName: Default Dish
+  dishName: "\u7096\u732A\u811A"
+  dishMenuData: {fileID: 0}
+  completeness: 1
+  deliveryRange: 5
+  customerLayer:
+    serializedVersion: 2
+    m_Bits: 8

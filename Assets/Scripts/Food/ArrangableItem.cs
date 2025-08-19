@@ -46,6 +46,10 @@ public class ArrangableItem : MonoBehaviour, IPointerClickHandler
         }
     }
     
+    /// <summary>
+    /// 点击事件
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!isArranged)
@@ -54,6 +58,9 @@ public class ArrangableItem : MonoBehaviour, IPointerClickHandler
         }
     }
     
+    /// <summary>
+    /// 排列物品
+    /// </summary>
     public void ArrangeItem()
     {
         if (ItemArrangementManager.Instance != null)
@@ -63,6 +70,10 @@ public class ArrangableItem : MonoBehaviour, IPointerClickHandler
         }
     }
     
+    /// <summary>
+    /// 设置目标位置
+    /// </summary>
+    /// <param name="position"></param>
     public void SetTargetPosition(Vector2 position)
     {
         targetPosition = position;
@@ -71,6 +82,9 @@ public class ArrangableItem : MonoBehaviour, IPointerClickHandler
         isMoving = true;
     }
     
+    /// <summary>
+    /// 重置排列
+    /// </summary>
     public void ResetArrangement()
     {
         isArranged = false;
