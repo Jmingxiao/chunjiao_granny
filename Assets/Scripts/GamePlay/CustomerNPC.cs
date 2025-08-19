@@ -513,19 +513,22 @@ public class CustomerNPC : MonoBehaviour
 
     private IEnumerator LeaveToLeft()
     {
-        // Calculate exit position
-        float exitX = customerSpawner != null ? customerSpawner.transform.position.x - 15f : transform.position.x - 20f;
-        Vector3 exitPosition = new Vector3(exitX, transform.position.y, transform.position.z);
+        // 向左移动直到离开屏幕
+        float exitX = transform.position.x - 20f;
         
-        while (Vector3.Distance(transform.position, exitPosition) > reachThreshold)
+        while (transform.position.x > exitX)
         {
             transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-            UpdateSpriteDirection(-1); // Face left
+            UpdateSpriteDirection(-1); // 面向左边
             yield return null;
         }
         
+        // 等待3秒后销毁
+        yield return new WaitForSeconds(3f);
+        
+        // 清理并销毁
         CleanUp();
-        customerSpawner?.ReturnCustomerToPool(this);
+        Destroy(gameObject);
     }
 
     private void UpdateSpriteDirection(float direction)

@@ -643,79 +643,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &307718503
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 423429386515620640, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_ExcludeLayers.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 4200599304415044055, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 15.34
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.82
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4454043068340711267, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7013703200194715646, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: m_Name
-      value: NPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 8944768189691691724, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: recipeDatabase
-      value: 
-      objectReference: {fileID: 11400000, guid: 0edea5f777f42054d9cd1cac5ddb53be, type: 2}
-    - target: {fileID: 8944768189691691724, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-      propertyPath: defaultWaitingTime
-      value: 10
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
 --- !u!1 &337265975
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +833,7 @@ Transform:
   m_GameObject: {fileID: 384872381}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.85413, y: -0.8957592, z: 0.019504547}
+  m_LocalPosition: {x: -12.5, y: -0.8957592, z: 0.019504547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -937,7 +864,7 @@ Transform:
   m_GameObject: {fileID: 433136719}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.084129, y: -0.8957592, z: 0.019504547}
+  m_LocalPosition: {x: -7.67, y: -0.8957592, z: 0.019504547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3005,11 +2932,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1320490328 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7013703200194715646, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
-  m_PrefabInstance: {fileID: 307718503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1342868060
 GameObject:
   m_ObjectHideFlags: 0
@@ -3753,18 +3675,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585dd55bd75fba0469e341f342347f5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customerNPCPrefab: {fileID: 1320490328}
+  customerNPCPrefab: {fileID: 7013703200194715646, guid: bdfcddfcebd00ad4683cf3b94fb93205, type: 3}
   topicBubbleUIPrefab: {fileID: 0}
-  minSpawnFrequency: 3
-  maxSpawnFrequency: 10
-  maxCustomersOnScreen: 5
-  spawnXPosition: -10
+  spawnMode: 0
+  fixedSpawnInterval: 3.9
+  minSpawnInterval: 1.51
+  maxSpawnInterval: 8.59
+  useCustomSchedule: 0
+  customSpawnSchedule: []
+  maxCustomersOnScreen: 7
+  customersPerWave: 2
+  spawnXPosition: 17.28
   spawnYMin: -3
   spawnYMax: 3
   availableMenus:
   - {fileID: 11400000, guid: ca440d6ed3e4d2f4682590c5920fa4cf, type: 2}
-  queueManager: {fileID: 481151567}
   recipeDatabase: {fileID: 11400000, guid: 0edea5f777f42054d9cd1cac5ddb53be, type: 2}
+  queueManager: {fileID: 481151567}
+  showDebugInfo: 1
+  nextSpawnTime: 0
+  totalCustomersSpawned: 0
 --- !u!4 &1571652890
 Transform:
   m_ObjectHideFlags: 0
@@ -3774,7 +3704,7 @@ Transform:
   m_GameObject: {fileID: 1571652888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.66, y: -0.15, z: 3.3103995}
+  m_LocalPosition: {x: 13.66, y: -1.27, z: 3.3103995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4414,7 +4344,7 @@ Transform:
   m_GameObject: {fileID: 1801219280}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.3741293, y: -0.8957592, z: 0.019504547}
+  m_LocalPosition: {x: -1.94, y: -0.8957592, z: 0.019504547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5077,7 +5007,6 @@ SceneRoots:
   - {fileID: 1465123435}
   - {fileID: 1700783706}
   - {fileID: 1052259120}
-  - {fileID: 307718503}
   - {fileID: 1314372547}
   - {fileID: 1527178890}
   - {fileID: 1278990828}

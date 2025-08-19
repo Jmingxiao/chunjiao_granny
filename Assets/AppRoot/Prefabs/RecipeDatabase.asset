@@ -28,7 +28,7 @@ MonoBehaviour:
     dishPrefab: {fileID: 3753595163899292749, guid: b8fe6c0bf9dac8649892c7186826c012, type: 3}
     difficulty: 31
     popularity: 0.184
-  - recipeName: "\u8FA3\u6912\u7092\u8089"
+  - recipeName: "\u7096\u732A\u811A"
     description: 
     basePrice: 1.23
     icon: {fileID: 21300000, guid: b7c3ab4e1158d3342b40a38bb1ce2938, type: 3}

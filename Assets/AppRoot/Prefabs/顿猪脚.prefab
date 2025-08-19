@@ -187,6 +187,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dishName: "\u7096\u732A\u811A"
   dishMenuData: {fileID: 0}
+  associatedRecipe:
+    recipeName: "\u7096\u732A\u811A"
+    description: 
+    basePrice: 0
+    icon: {fileID: 0}
+    requiredIngredients: []
+    dishPrefab: {fileID: 0}
+    difficulty: 0
+    popularity: 0
   completeness: 1
   deliveryRange: 5
   customerLayer:
