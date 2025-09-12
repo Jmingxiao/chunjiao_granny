@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d2cbc8b69096ef44ba37abaaa4c4bf3, type: 3}
+  m_Name: Cabbage
+  m_EditorClassIdentifier: 
+  ingredientName: Cabbage
+  icon: {fileID: 21300000, guid: dd805ea3823a34bfe9b73ef2194e2897, type: 3}
+  rawPrefab: {fileID: 7818136354151507202, guid: 0921877104bfe034a881961c7bbc4211, type: 3}
+  processedPrefab: {fileID: 8617146763352515458, guid: 220aa8139d3dcc84296dbf3b9df947cc, type: 3}
+  potType: 0
